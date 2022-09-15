@@ -1,0 +1,38 @@
+#  The contact options.
+
+-
+  type: gitlab
+  icon: 'fab fa-gitlab'
+-   
+  type: linkedin
+  icon: 'fab fa-linkedin'   # icons powered by <https://fontawesome.com/>
+  url:  'https://www.linkedin.com/in/alberto-di%C3%A9guez-%C3%A1lvarez-018254193/'                  # Fill with your mastodon account page
+-
+  type: email
+  icon: 'fas fa-envelope'
+  
+# -
+  # type: github
+  # icon: 'fab fa-github'
+# -
+  # noblank: true            # open link in current tab
+  # type: twitter
+  # icon: 'fab fa-twitter'
+# -
+  # type: rss
+  # icon: 'fas fa-rss'
+  # noblank: true
+
+# Uncomment and complete the url below to enable more contact options
+# -
+#   type: mastodon
+#   icon: 'fab fa-mastodon'   # icons powered by <https://fontawesome.com/>
+#   url:  ''                  # Fill with your mastodon account page
+# -
+#   type: linkedin
+#   icon: 'fab fa-linkedin'   # icons powered by <https://fontawesome.com/>
+#   url:  ''                  # Fill with your Linkedin homepage
+# -
+#   type: stack-overflow
+#   icon: 'fab fa-stack-overflow'
+#   url:  ''                  # Fill with your stackoverflow homepage

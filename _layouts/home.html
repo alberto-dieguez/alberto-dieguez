@@ -1,0 +1,139 @@
+---
+layout: page
+# The Home page layout
+---
+<style>
+.img_home{
+	float: right;
+	width: 200px;
+	height: 150px;
+	margin-left: 30px;
+	margin-top: 8px;
+	border-radius: 0px 40px 0px 40px;
+	-webkit-border-radius: 0px 40px 0px 40px;
+	-moz-border-radius: 0px 40px 0px 40px;
+}
+@media all and (max-width: 576px) {
+  .post-content > p > img {
+	width: 100%;
+	margin: auto;
+	margin-bottom: 12px;
+  }
+}
+@media all and (max-width: 576px) {
+  .post-content > p {
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+}
+@media all and (max-width: 576px) {
+  .post-preview:first-child {
+	margin-top: -20px;
+  }
+}
+
+@media all and (max-width: 576px) {
+  .post-preview > h1 {
+	text-align: center;
+  }
+}
+
+</style>
+{% include lang.html %}
+
+{% assign pinned = site.posts | where: "pin", "true" %}
+{% assign default = site.posts | where_exp: "item", "item.pin != true" %}
+
+{% assign posts = "" | split: "" %}
+
+<!-- Get pinned posts -->
+
+{% assign offset = paginator.page | minus: 1 | times: paginator.per_page %}
+{% assign pinned_num = pinned.size | minus: offset %}
+
+{% if pinned_num > 0 %}
+  {% for i in (offset..pinned.size) limit: pinned_num %}
+    {% assign posts = posts | push: pinned[i] %}
+  {% endfor %}
+{% else %}
+  {% assign pinned_num = 0 %}
+{% endif %}
+
+
+<!-- Get default posts -->
+
+{% assign default_beg = offset | minus: pinned.size %}
+
+{% if default_beg < 0 %}
+  {% assign default_beg = 0 %}
+{% endif %}
+
+{% assign default_num = paginator.posts | size | minus: pinned_num  %}
+{% assign default_end = default_beg | plus: default_num | minus: 1 %}
+
+{% if default_num > 0 %}
+  {% for i in (default_beg..default_end) %}
+    {% assign posts = posts | push: default[i] %}
+  {% endfor %}
+{% endif %}
+
+<div id="post-list">
+
+{% for post in posts %}
+  <div class="post-preview">
+    <h1>
+      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+    </h1>
+<!-- Las imágenes mejor que sean 400px x  -->
+    <div class="post-content">
+      <p style="display:block;">
+	   <img src="{{ post.img }}" class="img_home"/>
+        {% include no-linenos.html content=post.content %}
+        {{ content | markdownify | strip_html | truncate: 350 | escape }}
+      </p>
+    </div>
+
+    <div class="post-meta text-muted d-flex">
+
+      <div class="mr-auto">
+        <!-- posted date -->
+        <i class="far fa-calendar fa-fw"></i>
+        {% include timeago.html date=post.date tooltip=true %}
+
+        <!-- time to read 
+        <i class="far fa-clock fa-fw"></i>
+		-->
+        {% comment %}
+		{% include read-time.html content=post.content %}
+		{% endcomment %}
+
+        <!-- categories -->
+        {% if post.categories.size > 0 %}
+          <i class="far fa-folder-open fa-fw"></i>
+          <span>
+          {% for category in post.categories %}
+            {{ category }}
+            {%- unless forloop.last -%},{%- endunless -%}
+          {% endfor %}
+          </span>
+        {% endif %}
+      </div>
+
+      {% if post.pin %}
+      <div class="pin">
+        <i class="fas fa-thumbtack fa-fw"></i>
+        <span>{{ site.data.locales[lang].post.pin_prompt }}</span>
+      </div>
+      {% endif %}
+
+    </div> <!-- .post-meta -->
+
+  </div> <!-- .post-review -->
+
+{% endfor %}
+
+</div> <!-- #post-list -->
+
+{% if paginator.total_pages > 0 %}
+  {% include post-paginator.html %}
+{% endif %}
